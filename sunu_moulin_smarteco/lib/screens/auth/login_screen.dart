@@ -26,9 +26,7 @@ class LoginScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: IconButton(
                   icon: Icon(Icons.language, color: textColor.withOpacity(0.7)),
-                  onPressed: () {
-                    // TODO: Revenir à l'écran de sélection de la langue ou afficher un menu.
-                  },
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
             ),
@@ -130,7 +128,9 @@ class LoginScreen extends StatelessWidget {
       // Bouton flottant pour la commande vocale.
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Activer l'écoute pour la commande vocale.
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+          );
         },
         backgroundColor: primaryColor,
         child: const Icon(Icons.mic, color: Colors.white, size: 32),

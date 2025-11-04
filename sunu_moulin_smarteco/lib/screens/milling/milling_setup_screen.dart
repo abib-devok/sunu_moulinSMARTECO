@@ -41,7 +41,10 @@ class MillingSetupScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: sunuBeige,
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: sunuCharcoal, size: 30),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: sunuCharcoal, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         centerTitle: true,
         title: Text(
           'Sunu Moulin',
@@ -275,7 +278,11 @@ class MillingSetupScreen extends ConsumerWidget {
               ),
               const SizedBox(width: 16),
               FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                  );
+                },
                 backgroundColor: yellow,
                 child: Icon(Icons.mic, color: charcoal),
               ),

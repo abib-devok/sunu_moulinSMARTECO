@@ -29,7 +29,10 @@ class ConnectToMillScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF6F8F6),
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: Color(0xFF102213)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF102213)),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           'Connecter à un Moulin',
           style: GoogleFonts.inter(
@@ -41,7 +44,11 @@ class ConnectToMillScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline, color: Color(0xFF102213)),
-            onPressed: () { /* TODO: Afficher l'aide */ },
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+              );
+            },
           ),
         ],
       ),
@@ -73,7 +80,7 @@ class ConnectToMillScreen extends StatelessWidget {
       ),
       // Boutons d'action flottants en bas.
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _buildFloatingActionButtons(),
+      floatingActionButton: _buildFloatingActionButtons(context),
     );
   }
 
@@ -124,14 +131,18 @@ class ConnectToMillScreen extends StatelessWidget {
   }
 
   // Construit les boutons d'action flottants.
-  Widget _buildFloatingActionButtons() {
+  Widget _buildFloatingActionButtons(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
           Expanded(
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                );
+              },
               icon: const Icon(Icons.refresh),
               label: const Text('Scanner'),
               style: ElevatedButton.styleFrom(
@@ -144,7 +155,11 @@ class ConnectToMillScreen extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+              );
+            },
             backgroundColor: const Color(0xFF13EC37), // primary
             child: const Icon(Icons.mic, color: Colors.black),
           ),
