@@ -60,7 +60,10 @@ class MillingHistoryScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: textColor),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: textColor),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           'Historique des Moutures',
           style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: textColor),
@@ -88,7 +91,11 @@ class MillingHistoryScreen extends StatelessWidget {
       ),
       // Bouton d'action flottant pour l'export.
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+          );
+        },
         backgroundColor: const Color(0xFF13EC37),
         icon: const Icon(Icons.download, color: Colors.black),
         label: Text(

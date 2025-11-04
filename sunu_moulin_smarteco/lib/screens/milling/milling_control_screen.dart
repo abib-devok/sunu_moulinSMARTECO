@@ -69,7 +69,7 @@ class MillingControlScreen extends StatelessWidget {
             ),
 
             // Boutons d'action en bas de page.
-            _buildActionButtons(primaryColor, accentRed, accentBlue),
+            _buildActionButtons(context, primaryColor, accentRed, accentBlue),
           ],
         ),
       ),
@@ -83,7 +83,14 @@ class MillingControlScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(icon: Icon(Icons.menu, color: textColor), onPressed: () {}),
+          IconButton(
+            icon: Icon(Icons.menu, color: textColor),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+              );
+            },
+          ),
           Text(
             'Moulin 01 - Connecté',
             style: GoogleFonts.inter(
@@ -189,7 +196,7 @@ class MillingControlScreen extends StatelessWidget {
   }
 
   // Construit la section des boutons d'action.
-  Widget _buildActionButtons(Color primaryColor, Color accentRed, Color accentBlue) {
+  Widget _buildActionButtons(BuildContext context, Color primaryColor, Color accentRed, Color accentBlue) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -216,7 +223,11 @@ class MillingControlScreen extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: accentRed,
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -234,7 +245,11 @@ class MillingControlScreen extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+              );
+            },
             backgroundColor: accentBlue,
             child: const Icon(Icons.mic, color: Colors.white, size: 30),
           ),
