@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sunu_moulin_smarteco/screens/milling/milling_control_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Providers pour gérer l'état de la configuration de la mouture.
 final selectedCerealProvider = StateProvider<String>((ref) => 'Mil');
@@ -22,12 +23,13 @@ class MillingSetupScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     // Données fictives pour les types de céréales.
     final List<Cereal> cereals = [
-      Cereal(name: 'Mil', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAPs9oPbj15HMXk-R_0WTdcBRUP_CSSj3D7s6eHRVJop3hoZTbpId6A5m7JMLBobKAoX-S7WIA2PITxA-POfC5PS8bWheqfFlqjqtAnhIrobA_oZhiSWBcYrhHo-SnMAszfzmMXIuYtNjWVQhowyjSwIPp_w-XV6udvgxlHgxLV_-35f_wI5tfNUcS47DU6ON5dVoBy10NgCQ99LI4QICJDXS20Yzi-OKrZnSe2amEHkqgR2S3R4smMqEmC4H_iOO_gXF9nMivmYU'),
-      Cereal(name: 'Maize', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBt0oiOWj2XBW7dxDr4j5Le_BZDjrEiuBJmIhjuiXsige3yYkIBiSyBG8JFXP6ARSTw9hz1j3YCrefyBdzzN1ryDhO5wBs-LZZ_6GmVUfzAxqOwoF-WWgFoV_f5_qevnKXcPLnNm8qOub1oYGtgzNP_aVj2WJF12CfyfSmDPn0bNJ_CHr1BKf0fMuP4Dx8LQ0B_pmhmotvH4p5nYO4g085bm4lO7EomFENSYR2FQ4Gu1tk7L_X8AuaIsyU7yQjZaLCQ8D7LEMqDM4w'),
-      Cereal(name: 'Wheat', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCAjgXshp1mJ9e45PuvmXgn8nA85wvsClVm56LSSvoTBo03SydJ3nFN9f52QGjcf7hBSMebE3gBtYsaQsE0lw76HUyOCJWmwMNLpHO99UnfFMGJ2PMJ6214c1HbnQL6IIiRgbZ_8xkXChzH-jZjiXnx4eEEe8iSdp-dOI9ylBnpD6Jveu1Kuqharoxqqtg9hA3lOV2i4TFmSagwkX_-YZih0UfPu4FlLchcZcClBg_JnnxQiGPeR9oyot9TZgL0osrURSDnVLhFL7M'),
-      Cereal(name: 'Sorghum', imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD4TcyMsZTtwDZZGrmZ-u0cBiDPBtEL5TsS0f-cUM6o-SOzkQdGKh66yHS9Nws6QEr1M8Sr_RpXTHS3Pxwp4assFRB6yZaYMCLugHG7ILDCaUbPk_YWeSuxSHJVtHfbB9jL8u7VsmPQ8hq6D5I8I_7bJcrC07vlSsIZ7z4IyJLG3ECEb1okoJkXdTyeQsQl0N2ZEo5AORWKAPSJXmDVyLD-MOY5d7y7ulxpuWql0WtyMr9AHfOGVxQWs3bnFLlVeDxPYPqpfWZoomc'),
+      Cereal(name: l10n.cerealMil, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAPs9oPbj15HMXk-R_0WTdcBRUP_CSSj3D7s6eHRVJop3hoZTbpId6A5m7JMLBobKAoX-S7WIA2PITxA-POfC5PS8bWheqfFlqjqtAnhIrobA_oZhiSWBcYrhHo-SnMAszfzmMXIuYtNjWVQhowyjSwIPp_w-XV6udvgxlHgxLV_-35f_wI5tfNUcS47DU6ON5dVoBy10NgCQ99LI4QICJDXS20Yzi-OKrZnSe2amEHkqgR2S3R4smMqEmC4H_iOO_gXF9nMivmYU'),
+      Cereal(name: l10n.cerealMaize, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBt0oiOWj2XBW7dxDr4j5Le_BZDjrEiuBJmIhjuiXsige3yYkIBiSyBG8JFXP6ARSTw9hz1j3YCrefyBdzzN1ryDhO5wBs-LZZ_6GmVUfzAxqOwoF-WWgFoV_f5_qevnKXcPLnNm8qOub1oYGtgzNP_aVj2WJF12CfyfSmDPn0bNJ_CHr1BKf0fMuP4Dx8LQ0B_pmhmotvH4p5nYO4g085bm4lO7EomFENSYR2FQ4Gu1tk7L_X8AuaIsyU7yQjZaLCQ8D7LEMqDM4w'),
+      Cereal(name: l10n.cerealWheat, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCAjgXshp1mJ9e45PuvmXgn8nA85wvsClVm56LSSvoTBo03SydJ3nFN9f52QGjcf7hBSMebE3gBtYsaQsE0lw76HUyOCJWmwMNLpHO99UnfFMGJ2PMJ6214c1HbnQL6IIiRgbZ_8xkXChzH-jZjiXnx4eEEe8iSdp-dOI9ylBnpD6Jveu1Kuqharoxqqtg9hA3lOV2i4TFmSagwkX_-YZih0UfPu4FlLchcZcClBg_JnnxQiGPeR9oyot9TZgL0osrURSDnVLhFL7M'),
+      Cereal(name: l10n.cerealSorghum, imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD4TcyMsZTtwDZZGrmZ-u0cBiDPBtEL5TsS0f-cUM6o-SOzkQdGKh66yHS9Nws6QEr1M8Sr_RpXTHS3Pxwp4assFRB6yZaYMCLugHG7ILDCaUbPk_YWeSuxSHJVtHfbB9jL8u7VsmPQ8hq6D5I8I_7bJcrC07vlSsIZ7z4IyJLG3ECEb1okoJkXdTyeQsQl0N2ZEo5AORWKAPSJXmDVyLD-MOY5d7y7ulxpuWql0WtyMr9AHfOGVxQWs3bnFLlVeDxPYPqpfWZoomc'),
     ];
 
     // Couleurs spécifiques au design.
@@ -37,19 +39,13 @@ class MillingSetupScreen extends ConsumerWidget {
     const Color sunuYellow = Color(0xFFFBBF24);
 
     return Scaffold(
-      backgroundColor: sunuBeige,
       appBar: AppBar(
-        backgroundColor: sunuBeige,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: sunuCharcoal, size: 30),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
         centerTitle: true,
-        title: Text(
-          'Sunu Moulin',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: sunuCharcoal),
-        ),
+        title: Text(l10n.appTitle),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,36 +53,35 @@ class MillingSetupScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              'Configurez Votre Mouture',
+              l10n.configureMilling,
               style: GoogleFonts.inter(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: sunuCharcoal,
               ),
             ),
           ),
           // Indicateur de progression.
-          _buildStepIndicator(),
+          _buildStepIndicator(context, l10n),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 16),
               children: [
                 // Section 1: Choix de la céréale.
-                _buildSectionHeader('1. Choisissez votre Céréale'),
+                _buildSectionHeader(l10n.chooseCereal),
                 _buildCerealCarousel(cereals, ref),
 
                 // Section 2: Choix de la finesse.
-                _buildSectionHeader('2. Sélectionnez la Finesse'),
-                _buildFinenessSelector(ref, sunuOrange),
+                _buildSectionHeader(l10n.selectFineness),
+                _buildFinenessSelector(ref, sunuOrange, l10n),
 
                 // Section 3: Définition de la quantité.
-                _buildSectionHeader('3. Réglez la Quantité (kg)'),
+                _buildSectionHeader(l10n.setQuantity),
                 _buildQuantitySelector(ref, sunuCharcoal),
               ],
             ),
           ),
           // Actions en bas de page.
-          _buildBottomActions(context, sunuOrange, sunuYellow, sunuCharcoal),
+          _buildBottomActions(context, sunuOrange, sunuYellow, sunuCharcoal, l10n),
         ],
       ),
     );
@@ -101,20 +96,19 @@ class MillingSetupScreen extends ConsumerWidget {
         style: GoogleFonts.inter(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: const Color(0xFF333333),
         ),
       ),
     );
   }
 
   // Construit l'indicateur de progression.
-  Widget _buildStepIndicator() {
+  Widget _buildStepIndicator(BuildContext context, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Étape 1 sur 3', style: GoogleFonts.inter(color: Colors.grey[700])),
+          Text(l10n.step1Of3, style: GoogleFonts.inter(color: Colors.grey[700])),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -186,14 +180,14 @@ class MillingSetupScreen extends ConsumerWidget {
   }
 
   // Construit le sélecteur de finesse.
-  Widget _buildFinenessSelector(WidgetRef ref, Color activeColor) {
+  Widget _buildFinenessSelector(WidgetRef ref, Color activeColor, AppLocalizations l10n) {
     final selectedFineness = ref.watch(selectedFinenessProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
           _FinenessButton(
-            label: 'Fine',
+            label: l10n.fine,
             icon: Icons.grain,
             isSelected: selectedFineness == 'Fine',
             onTap: () => ref.read(selectedFinenessProvider.notifier).state = 'Fine',
@@ -201,7 +195,7 @@ class MillingSetupScreen extends ConsumerWidget {
           ),
           const SizedBox(width: 12),
           _FinenessButton(
-            label: 'Moyenne',
+            label: l10n.medium,
             icon: Icons.view_cozy,
             isSelected: selectedFineness == 'Medium',
             onTap: () => ref.read(selectedFinenessProvider.notifier).state = 'Medium',
@@ -209,7 +203,7 @@ class MillingSetupScreen extends ConsumerWidget {
           ),
           const SizedBox(width: 12),
           _FinenessButton(
-            label: 'Grosse',
+            label: l10n.coarse,
             icon: Icons.apps,
             isSelected: selectedFineness == 'Coarse',
             onTap: () => ref.read(selectedFinenessProvider.notifier).state = 'Coarse',
@@ -254,7 +248,7 @@ class MillingSetupScreen extends ConsumerWidget {
   }
 
   // Construit les actions en bas de la page.
-  Widget _buildBottomActions(BuildContext context, Color orange, Color yellow, Color charcoal) {
+  Widget _buildBottomActions(BuildContext context, Color orange, Color yellow, Color charcoal, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -273,14 +267,14 @@ class MillingSetupScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Ou, tapez sur le micro et dites "Moudre 5kg de mil fin."',
+                l10n.voiceHint,
                 style: GoogleFonts.inter(color: Colors.grey[600]),
               ),
               const SizedBox(width: 16),
               FloatingActionButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                    SnackBar(content: Text(l10n.notImplemented)),
                   );
                 },
                 backgroundColor: yellow,
@@ -304,7 +298,7 @@ class MillingSetupScreen extends ConsumerWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               child: Text(
-                'Confirmer la Mouture',
+                l10n.confirmMilling,
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

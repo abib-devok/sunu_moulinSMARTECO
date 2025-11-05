@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Modèle de données simple pour une session de mouture.
 class MillingSession {
@@ -17,57 +19,47 @@ class MillingSession {
 }
 
 // Écran affichant l'historique des sessions de mouture.
-class MillingHistoryScreen extends StatelessWidget {
+class MillingHistoryScreen extends ConsumerWidget {
   const MillingHistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     // Données fictives pour l'historique.
     final List<MillingSession> sessions = [
       MillingSession(
         id: 'SM-20230915-001',
-        details: 'Poids total: 50 kg | Durée: 45 min',
+        details: l10n.sessionDetails(50, 45),
         date: '15 Sep 2023, 10:30',
         status: 'Completed',
       ),
       MillingSession(
         id: 'SM-20230914-003',
-        details: 'Poids total: 75 kg | Durée: 62 min',
+        details: l10n.sessionDetails(75, 62),
         date: '14 Sep 2023, 14:15',
         status: 'Anomaly',
       ),
       MillingSession(
         id: 'SM-20230914-002',
-        details: 'Statut: Échec | Durée: 5 min',
+        details: l10n.statusFailed(5),
         date: '14 Sep 2023, 11:00',
         status: 'Failed',
       ),
       MillingSession(
         id: 'SM-20230913-005',
-        details: 'Poids total: 120 kg | Durée: 88 min',
+        details: l10n.sessionDetails(120, 88),
         date: '13 Sep 2023, 09:05',
         status: 'Completed',
       ),
     ];
 
-    // Couleurs du design.
-    const Color backgroundColor = Color(0xFFF6F8F6);
-    const Color cardBackgroundColor = Colors.white;
-    const Color textColor = Color(0xFF1A2C1D);
-
     return Scaffold(
-      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textColor),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
-          'Historique des Moutures',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: textColor),
-        ),
+        title: Text(l10n.historyTitle),
         centerTitle: true,
       ),
       body: Padding(
@@ -75,7 +67,7 @@ class MillingHistoryScreen extends StatelessWidget {
         child: Column(
           children: [
             // Barre de recherche.
-            _buildSearchBar(),
+            _buildSearchBar(context, l10n),
             const SizedBox(height: 16),
             // Liste des sessions.
             Expanded(
@@ -93,29 +85,24 @@ class MillingHistoryScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+            SnackBar(content: Text(l10n.notImplemented)),
           );
         },
-        backgroundColor: const Color(0xFF13EC37),
-        icon: const Icon(Icons.download, color: Colors.black),
-        label: Text(
-          'Exporter l\'Historique',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
+        label: Text(l10n.exportHistory),
+        icon: const Icon(Icons.download),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
   // Construit la barre de recherche.
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(BuildContext context, AppLocalizations l10n) {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Rechercher par date ou ID...',
+        hintText: l10n.searchHint,
         prefixIcon: const Icon(Icons.search),
         suffixIcon: const Icon(Icons.tune),
         filled: true,
-        fillColor: Colors.grey[200],
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -132,7 +119,7 @@ class _SessionCard extends StatelessWidget {
   const _SessionCard({required this.session});
 
   // Détermine le style (icône et couleur) en fonction du statut.
-  Map<String, dynamic> _getStatusStyle() {
+  Map<String, dynamic> _getStatusStyle(BuildContext context) {
     switch (session.status) {
       case 'Completed':
         return {'icon': Icons.check_circle, 'color': Colors.green};
@@ -147,7 +134,7 @@ class _SessionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusStyle = _getStatusStyle();
+    final statusStyle = _getStatusStyle(context);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),

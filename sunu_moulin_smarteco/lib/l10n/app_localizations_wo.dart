@@ -10,4 +10,149 @@ class AppLocalizationsWo extends AppLocalizations {
 
   @override
   String get appTitle => 'Sunu Moulin SmartEco';
+
+  @override
+  String get languageSelectionTitle => 'Tànnal sa làkk';
+
+  @override
+  String get wolof => 'Wolof';
+
+  @override
+  String get french => 'Français';
+
+  @override
+  String get english => 'Anglais';
+
+  @override
+  String get continueButton => 'Kontiñe';
+
+  @override
+  String get welcomeMessage => 'Dalal-jàmm ci Sunu Moulin';
+
+  @override
+  String get loginPrompt => 'Tànnal nu ngay dugge';
+
+  @override
+  String get scanQR => 'Skanne QR';
+
+  @override
+  String get enterPIN => 'Duggal PIN';
+
+  @override
+  String get guestAccess => 'Duggu ni Gan';
+
+  @override
+  String get needHelp => 'Soo bëggee ndimbal?';
+
+  @override
+  String get connectToMill => 'Jokkoo ak ab Moulin';
+
+  @override
+  String get bluetooth => 'Bluetooth';
+
+  @override
+  String get wifi => 'Wi-Fi';
+
+  @override
+  String get enabled => 'Takk na';
+
+  @override
+  String get nearbyMills => 'Moulin yu Jege yi';
+
+  @override
+  String get scanForMills => 'Skanne';
+
+  @override
+  String get available => 'Mën naa Jëfandikoo';
+
+  @override
+  String get inUse => 'Ci Jëfandikoo';
+
+  @override
+  String get offline => 'Takkul';
+
+  @override
+  String get connect => 'Jokkoo';
+
+  @override
+  String get scanning => 'Gni ngi weur yeneen moulin...';
+
+  @override
+  String get configureMilling => 'Saytu Sa Sumaale';
+
+  @override
+  String get step1Of3 => 'Jéego 1 ci 3';
+
+  @override
+  String get chooseCereal => '1. Tànnal sa Cereale';
+
+  @override
+  String get selectFineness => '2. Tànnal Finesse bi';
+
+  @override
+  String get setQuantity => '3. Saytu Lim bi (kg)';
+
+  @override
+  String get fine => 'Fin';
+
+  @override
+  String get medium => 'Diggu';
+
+  @override
+  String get coarse => 'Rëy';
+
+  @override
+  String get voiceHint => 'Wala, taqal micro bi te wax \"Sumaal 5kg dugub fin.\"';
+
+  @override
+  String get confirmMilling => 'Sentu Sumaale bi';
+
+  @override
+  String get millControlTitle => 'Moulin 01 - Jokkoo na';
+
+  @override
+  String get millStarted => 'Sumaale bi door na ci jàmm.';
+
+  @override
+  String get milling => 'Sumaale...';
+
+  @override
+  String get temperature => 'Tàngaay';
+
+  @override
+  String get vibration => 'Yëngu-yëngu';
+
+  @override
+  String get progress => 'Avancement';
+
+  @override
+  String get normal => 'Normaal';
+
+  @override
+  String get startMilling => 'Door Sumaale';
+
+  @override
+  String get stop => 'Tàllil';
+
+  @override
+  String get historyTitle => 'Historiku Sumaale yi';
+
+  @override
+  String get searchHint => 'Weur ci bis wala ID...';
+
+  @override
+  String get exportHistory => 'Ekspòrtee Historik bi';
+
+  @override
+  String sessionDetails(Object duration, Object weight) {
+    return 'Poids Total: $weight kg | Durée: $duration min';
+  }
+
+  @override
+  String statusFailed(Object duration) {
+    return 'Statut: Echec | Durée: $duration min';
+  }
+
+  @override
+  String get notImplemented => 'Fonctionnalité bi sotti gul.';
 }

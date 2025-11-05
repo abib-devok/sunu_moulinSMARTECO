@@ -1,75 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sunu_moulin_smarteco/providers/app_providers.dart';
 import 'package:sunu_moulin_smarteco/screens/history/milling_history_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Écran de contrôle et de surveillance de la mouture en temps réel.
-class MillingControlScreen extends StatelessWidget {
+class MillingControlScreen extends ConsumerStatefulWidget {
   const MillingControlScreen({super.key});
 
   @override
+  ConsumerState<MillingControlScreen> createState() => _MillingControlScreenState();
+}
+
+class _MillingControlScreenState extends ConsumerState<MillingControlScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(bleServiceProvider).startSensorSimulation();
+  }
+
+  @override
+  void dispose() {
+    ref.read(bleServiceProvider).stopSensorSimulation();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Palette de couleurs et styles dérivés du design "Screen 5".
-    const Color primaryColor = Color(0xFF2ECC71);
-    const Color backgroundColor = Color(0xFFF0F4F8);
-    const Color textColor = Color(0xFF1A2530);
-    const Color accentRed = Color(0xFFE74C3C);
-    const Color accentBlue = Color(0xFF3498DB);
-    const Color accentOrange = Color(0xFFF39C12);
-    const Color cardBackgroundColor = Colors.white;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
             // Barre d'application personnalisée.
-            _buildAppBar(context, textColor, primaryColor),
+            _buildAppBar(context, l10n),
 
             // Bannière d'alerte/notification.
-            _buildAlertBanner(primaryColor),
+            _buildAlertBanner(context, l10n),
 
             // Indicateur d'état principal (cercle animé).
-            _buildMainStatusIndicator(primaryColor, textColor),
+            _buildMainStatusIndicator(context, l10n),
 
             // Jauges de données en temps réel.
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ListView(
-                  children: [
-                    _DataGauge(
-                      label: 'Température',
-                      valueText: '65°C',
-                      percentage: 0.65,
-                      color: accentOrange,
-                      backgroundColor: cardBackgroundColor,
-                      textColor: textColor,
-                    ),
-                    const SizedBox(height: 16),
-                    _DataGauge(
-                      label: 'Vibration',
-                      valueText: 'Normale',
-                      percentage: 0.30,
-                      color: primaryColor,
-                      backgroundColor: cardBackgroundColor,
-                      textColor: textColor,
-                    ),
-                    const SizedBox(height: 16),
-                    _DataGauge(
-                      label: 'Progression',
-                      valueText: '75%',
-                      percentage: 0.75,
-                      color: accentBlue,
-                      backgroundColor: cardBackgroundColor,
-                      textColor: textColor,
-                    ),
-                  ],
+                child: StreamBuilder<Map<String, double>>(
+                  stream: ref.watch(bleServiceProvider).sensorDataStream,
+                  initialData: const {'temperature': 0, 'vibration': 0, 'progress': 0},
+                  builder: (context, snapshot) {
+                    final data = snapshot.data!;
+                    return ListView(
+                      children: [
+                        _DataGauge(
+                          label: l10n.temperature,
+                          valueText: '${data['temperature']!.toStringAsFixed(1)}°C',
+                          percentage: data['temperature']! / 100,
+                          color: const Color(0xFFF39C12),
+                        ),
+                        const SizedBox(height: 16),
+                        _DataGauge(
+                          label: l10n.vibration,
+                          valueText: data['vibration']! < 0.6 ? l10n.normal : 'Élevée',
+                          percentage: data['vibration']!,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(height: 16),
+                        _DataGauge(
+                          label: l10n.progress,
+                          valueText: '${(data['progress']! * 100).toStringAsFixed(0)}%',
+                          percentage: data['progress']!,
+                          color: const Color(0xFF3498DB),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
 
             // Boutons d'action en bas de page.
-            _buildActionButtons(context, primaryColor, accentRed, accentBlue),
+            _buildActionButtons(context, l10n),
           ],
         ),
       ),
@@ -77,31 +90,30 @@ class MillingControlScreen extends StatelessWidget {
   }
 
   // Construit la barre d'application.
-  Widget _buildAppBar(BuildContext context, Color textColor, Color primaryColor) {
+  Widget _buildAppBar(BuildContext context, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: Icon(Icons.menu, color: textColor),
+            icon: const Icon(Icons.menu),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                SnackBar(content: Text(l10n.notImplemented)),
               );
             },
           ),
           Text(
-            'Moulin 01 - Connecté',
+            l10n.millControlTitle,
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: textColor,
             ),
           ),
-          IconButton(icon: Icon(Icons.wifi, color: primaryColor), onPressed: () {}),
+          IconButton(icon: Icon(Icons.wifi, color: Theme.of(context).colorScheme.primary), onPressed: () {}),
           IconButton(
-            icon: Icon(Icons.history, color: textColor),
+            icon: const Icon(Icons.history),
             onPressed: () {
               Navigator.push(
                 context,
@@ -115,22 +127,22 @@ class MillingControlScreen extends StatelessWidget {
   }
 
   // Construit la bannière d'alerte.
-  Widget _buildAlertBanner(Color primaryColor) {
+  Widget _buildAlertBanner(BuildContext context, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: primaryColor.withOpacity(0.2),
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          Icon(Icons.check_circle, color: primaryColor),
+          Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: 12),
           Text(
-            'Mouture démarrée avec succès.',
+            l10n.millStarted,
             style: GoogleFonts.inter(
-              color: primaryColor,
+              color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -140,7 +152,7 @@ class MillingControlScreen extends StatelessWidget {
   }
 
   // Construit l'indicateur d'état central.
-  Widget _buildMainStatusIndicator(Color primaryColor, Color textColor) {
+  Widget _buildMainStatusIndicator(BuildContext context, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 24.0),
       child: Container(
@@ -148,7 +160,7 @@ class MillingControlScreen extends StatelessWidget {
         height: 224,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: primaryColor.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
         ),
         child: Center(
           child: Container(
@@ -156,7 +168,7 @@ class MillingControlScreen extends StatelessWidget {
             height: 192,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: primaryColor.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
             child: Center(
               child: Container(
@@ -164,7 +176,7 @@ class MillingControlScreen extends StatelessWidget {
                 height: 160,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
@@ -175,14 +187,13 @@ class MillingControlScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.rotate_right, size: 60, color: primaryColor),
+                    Icon(Icons.rotate_right, size: 60, color: Theme.of(context).colorScheme.primary),
                     const SizedBox(height: 8),
                     Text(
-                      'Mouture...',
+                      l10n.milling,
                       style: GoogleFonts.inter(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: textColor,
                       ),
                     ),
                   ],
@@ -196,7 +207,7 @@ class MillingControlScreen extends StatelessWidget {
   }
 
   // Construit la section des boutons d'action.
-  Widget _buildActionButtons(BuildContext context, Color primaryColor, Color accentRed, Color accentBlue) {
+  Widget _buildActionButtons(BuildContext context, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -204,19 +215,8 @@ class MillingControlScreen extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: null, // Désactivé comme dans le design
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor.withOpacity(0.2),
-                disabledBackgroundColor: primaryColor.withOpacity(0.2),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
               child: Text(
-                'Démarrer',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor.withOpacity(0.4),
-                ),
+                l10n.startMilling,
               ),
             ),
           ),
@@ -225,21 +225,14 @@ class MillingControlScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                  SnackBar(content: Text(l10n.notImplemented)),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: accentRed,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                backgroundColor: Theme.of(context).colorScheme.error,
               ),
               child: Text(
-                'Arrêter',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                l10n.stop,
               ),
             ),
           ),
@@ -247,11 +240,10 @@ class MillingControlScreen extends StatelessWidget {
           FloatingActionButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                SnackBar(content: Text(l10n.notImplemented)),
               );
             },
-            backgroundColor: accentBlue,
-            child: const Icon(Icons.mic, color: Colors.white, size: 30),
+            child: const Icon(Icons.mic),
           ),
         ],
       ),
@@ -265,16 +257,12 @@ class _DataGauge extends StatelessWidget {
   final String valueText;
   final double percentage;
   final Color color;
-  final Color backgroundColor;
-  final Color textColor;
 
   const _DataGauge({
     required this.label,
     required this.valueText,
     required this.percentage,
     required this.color,
-    required this.backgroundColor,
-    required this.textColor,
   });
 
   @override
@@ -282,7 +270,7 @@ class _DataGauge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -292,7 +280,7 @@ class _DataGauge extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: GoogleFonts.inter(fontSize: 16, color: textColor),
+                style: GoogleFonts.inter(fontSize: 16),
               ),
               Text(
                 valueText,
