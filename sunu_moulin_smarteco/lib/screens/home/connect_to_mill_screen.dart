@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sunu_moulin_smarteco/screens/milling/milling_setup_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Modèle simple pour représenter un moulin avec son état.
 class MillDevice {
@@ -12,11 +14,12 @@ class MillDevice {
 }
 
 // Écran permettant de rechercher et de se connecter à un moulin à proximité.
-class ConnectToMillScreen extends StatelessWidget {
+class ConnectToMillScreen extends ConsumerWidget {
   const ConnectToMillScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     // Données fictives pour la liste des moulins.
     final List<MillDevice> nearbyMills = [
       MillDevice(name: 'Sunu Moulin #123', status: 'Available', signalStrength: 'strong'),
@@ -25,28 +28,19 @@ class ConnectToMillScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8F6), // background-light
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF6F8F6),
-        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF102213)),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
-          'Connecter à un Moulin',
-          style: GoogleFonts.inter(
-            color: const Color(0xFF102213),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: Text(l10n.connectToMill),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.help_outline, color: Color(0xFF102213)),
+            icon: const Icon(Icons.help_outline),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                SnackBar(content: Text(l10n.notImplemented)),
               );
             },
           ),
@@ -58,15 +52,14 @@ class ConnectToMillScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 16),
             // Panneaux d'état pour la connectivité.
-            _buildStatusPanels(),
+            _buildStatusPanels(context, l10n),
             const SizedBox(height: 24),
             // Titre de la section des moulins à proximité.
             Text(
-              'Moulins à Proximité',
+              l10n.nearbyMills,
               style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF102213),
               ),
             ),
             const SizedBox(height: 16),
@@ -74,35 +67,35 @@ class ConnectToMillScreen extends StatelessWidget {
             ...nearbyMills.map((mill) => _MillDeviceCard(mill: mill)),
             const SizedBox(height: 12),
             // Indicateur de scan.
-            _buildScanningIndicator(),
+            _buildScanningIndicator(context, l10n),
           ],
         ),
       ),
       // Boutons d'action flottants en bas.
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _buildFloatingActionButtons(context),
+      floatingActionButton: _buildFloatingActionButtons(context, l10n),
     );
   }
 
   // Construit les panneaux d'état pour Bluetooth et Wi-Fi.
-  Widget _buildStatusPanels() {
+  Widget _buildStatusPanels(BuildContext context, AppLocalizations l10n) {
     return Row(
       children: [
         Expanded(
           child: _StatusCard(
-            title: 'Bluetooth',
-            status: 'Activé',
+            title: l10n.bluetooth,
+            status: l10n.enabled,
             icon: Icons.bluetooth_connected,
-            iconColor: const Color(0xFF13EC37), // primary
+            iconColor: Theme.of(context).colorScheme.primary,
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
           child: _StatusCard(
-            title: 'Wi-Fi',
-            status: 'Activé',
+            title: l10n.wifi,
+            status: l10n.enabled,
             icon: Icons.wifi,
-            iconColor: const Color(0xFF13EC37), // primary
+            iconColor: Theme.of(context).colorScheme.primary,
           ),
         ),
       ],
@@ -110,20 +103,20 @@ class ConnectToMillScreen extends StatelessWidget {
   }
 
   // Construit l'indicateur visuel de scan.
-  Widget _buildScanningIndicator() {
+  Widget _buildScanningIndicator(BuildContext context, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300, width: 2),
+        border: Border.all(color: Theme.of(context).dividerColor, width: 2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
-          CircularProgressIndicator(color: const Color(0xFF13EC37)),
+          CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 16),
           Text(
-            'Recherche d\'autres moulins...',
-            style: GoogleFonts.inter(color: Colors.grey.shade600),
+            l10n.scanning,
+            style: GoogleFonts.inter(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)),
           ),
         ],
       ),
@@ -131,7 +124,7 @@ class ConnectToMillScreen extends StatelessWidget {
   }
 
   // Construit les boutons d'action flottants.
-  Widget _buildFloatingActionButtons(BuildContext context) {
+  Widget _buildFloatingActionButtons(BuildContext context, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -140,28 +133,21 @@ class ConnectToMillScreen extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                  SnackBar(content: Text(l10n.notImplemented)),
                 );
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Scanner'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF333333), // sunu-charcoal
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
+              label: Text(l10n.scanForMills),
             ),
           ),
           const SizedBox(width: 16),
           FloatingActionButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
+                SnackBar(content: Text(l10n.notImplemented)),
               );
             },
-            backgroundColor: const Color(0xFF13EC37), // primary
-            child: const Icon(Icons.mic, color: Colors.black),
+            child: const Icon(Icons.mic),
           ),
         ],
       ),
@@ -188,14 +174,14 @@ class _StatusCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: GoogleFonts.inter(color: Colors.grey.shade600)),
+          Text(title, style: GoogleFonts.inter(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -206,7 +192,6 @@ class _StatusCard extends StatelessWidget {
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: const Color(0xFF102213),
                 ),
               ),
             ],
@@ -224,16 +209,16 @@ class _MillDeviceCard extends StatelessWidget {
   const _MillDeviceCard({required this.mill});
 
   // Détermine la couleur et l'icône en fonction du statut.
-  Map<String, dynamic> _getStatusStyle() {
+  Map<String, dynamic> _getStatusStyle(BuildContext context) {
     switch (mill.status) {
       case 'Available':
-        return {'color': Colors.green, 'icon': Icons.check_circle};
+        return {'color': Colors.green, 'icon': Icons.check_circle, 'text': AppLocalizations.of(context)!.available};
       case 'In Use':
-        return {'color': Colors.orange, 'icon': Icons.hourglass_top};
+        return {'color': Colors.orange, 'icon': Icons.hourglass_top, 'text': AppLocalizations.of(context)!.inUse};
       case 'Offline':
-        return {'color': Colors.grey, 'icon': Icons.cancel};
+        return {'color': Colors.grey, 'icon': Icons.cancel, 'text': AppLocalizations.of(context)!.offline};
       default:
-        return {'color': Colors.grey, 'icon': Icons.help};
+        return {'color': Colors.grey, 'icon': Icons.help, 'text': AppLocalizations.of(context)!.offline};
     }
   }
 
@@ -251,7 +236,7 @@ class _MillDeviceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusStyle = _getStatusStyle();
+    final statusStyle = _getStatusStyle(context);
     final bool isEnabled = mill.status == 'Available';
 
     return Opacity(
@@ -268,10 +253,10 @@ class _MillDeviceCard extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF13EC37).withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.grain, color: Color(0xFF13EC37)),
+                child: Icon(Icons.grain, color: Theme.of(context).colorScheme.primary),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -282,7 +267,6 @@ class _MillDeviceCard extends StatelessWidget {
                       mill.name,
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF102213),
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -298,11 +282,11 @@ class _MillDeviceCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          mill.status,
-                          style: GoogleFonts.inter(color: Colors.grey.shade600),
+                          statusStyle['text'],
+                          style: GoogleFonts.inter(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)),
                         ),
                         const Spacer(),
-                        Icon(_getSignalIcon(), color: Colors.grey.shade500),
+                        Icon(_getSignalIcon(), color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
                       ],
                     ),
                   ],
@@ -313,12 +297,7 @@ class _MillDeviceCard extends StatelessWidget {
                 onPressed: isEnabled ? () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const MillingSetupScreen()));
                 } : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isEnabled ? const Color(0xFF13EC37) : Colors.grey.shade300,
-                  foregroundColor: isEnabled ? Colors.black : Colors.grey.shade500,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                child: const Text('Connecter'),
+                child: Text(AppLocalizations.of(context)!.connect),
               ),
             ],
           ),

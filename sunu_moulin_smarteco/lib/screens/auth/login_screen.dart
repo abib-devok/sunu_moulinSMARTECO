@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sunu_moulin_smarteco/providers/app_providers.dart';
 import 'package:sunu_moulin_smarteco/screens/home/connect_to_mill_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Écran de connexion principal offrant plusieurs méthodes d'authentification.
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Palette de couleurs et styles dérivés du design fourni (Screen 4).
-    final Color primaryColor = const Color(0xFFE8772E); // Orange du design
-    final Color backgroundColor = const Color(0xFFF9F6F1);
-    final Color textColor = const Color(0xFF1A2530);
-    final Color guestButtonColor = const Color(0xFFE0E0E0);
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -25,7 +22,7 @@ class LoginScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: IconButton(
-                  icon: Icon(Icons.language, color: textColor.withOpacity(0.7)),
+                  icon: Icon(Icons.language, color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7)),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -42,65 +39,61 @@ class LoginScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: primaryColor.withOpacity(0.2),
+                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: primaryColor.withOpacity(0.3),
+                          color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.grain, size: 48, color: primaryColor),
+                        child: Icon(Icons.grain, size: 48, color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                     const SizedBox(height: 32),
 
                     // Titres de bienvenue.
                     Text(
-                      'Bienvenue à Sunu Moulin',
+                      l10n.welcomeMessage,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: textColor,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Choisissez comment vous connecter',
+                      l10n.loginPrompt,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
                         fontSize: 16,
-                        color: textColor.withOpacity(0.7),
+                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
                       ),
                     ),
                     const SizedBox(height: 40),
 
                     // Boutons de méthode de connexion.
                     _AuthButton(
-                      label: 'Scanner QR',
+                      label: l10n.scanQR,
                       icon: Icons.qr_code_scanner,
-                      backgroundColor: primaryColor,
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const ConnectToMillScreen()));
                       },
                     ),
                     const SizedBox(height: 16),
                     _AuthButton(
-                      label: 'Entrer PIN',
+                      label: l10n.enterPIN,
                       icon: Icons.pin,
-                      backgroundColor: primaryColor,
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const ConnectToMillScreen()));
                       },
                     ),
                     const SizedBox(height: 16),
                     _AuthButton(
-                      label: 'Accès Invité',
+                      label: l10n.guestAccess,
                       icon: Icons.person,
-                      backgroundColor: guestButtonColor,
-                      textColor: textColor,
+                      isGuest: true,
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const ConnectToMillScreen()));
                       },
@@ -114,10 +107,10 @@ class LoginScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24.0),
               child: Text(
-                'Besoin d\'assistance ?',
+                l10n.needHelp,
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  color: textColor.withOpacity(0.6),
+                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -127,12 +120,11 @@ class LoginScreen extends StatelessWidget {
       ),
       // Bouton flottant pour la commande vocale.
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fonctionnalité pas encore implémentée.')),
-          );
+        onPressed: () async {
+          final voiceService = ref.read(voiceServiceProvider);
+          await voiceService.speak(l10n.loginPrompt);
         },
-        backgroundColor: primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         child: const Icon(Icons.mic, color: Colors.white, size: 32),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -144,15 +136,13 @@ class LoginScreen extends StatelessWidget {
 class _AuthButton extends StatelessWidget {
   final String label;
   final IconData icon;
-  final Color backgroundColor;
-  final Color textColor;
+  final bool isGuest;
   final VoidCallback onPressed;
 
   const _AuthButton({
     required this.label,
     required this.icon,
-    required this.backgroundColor,
-    this.textColor = Colors.white,
+    this.isGuest = false,
     required this.onPressed,
   });
 
@@ -162,17 +152,17 @@ class _AuthButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton.icon(
         onPressed: onPressed,
-        icon: Icon(icon, color: textColor),
+        icon: Icon(icon),
         label: Text(
           label,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: textColor,
           ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
+          backgroundColor: isGuest ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.secondary,
+          foregroundColor: isGuest ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSecondary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

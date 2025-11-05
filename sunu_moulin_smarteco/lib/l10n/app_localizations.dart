@@ -102,6 +102,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sunu Moulin SmartEco'**
   String get appTitle;
+
+  /// No description provided for @languageSelectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your language'**
+  String get languageSelectionTitle;
+
+  /// No description provided for @wolof.
+  ///
+  /// In en, this message translates to:
+  /// **'Wolof'**
+  String get wolof;
+
+  /// No description provided for @french.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get french;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @continueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// No description provided for @welcomeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Sunu Moulin'**
+  String get welcomeMessage;
+
+  /// No description provided for @loginPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to log in'**
+  String get loginPrompt;
+
+  /// No description provided for @scanQR.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR'**
+  String get scanQR;
+
+  /// No description provided for @enterPIN.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter PIN'**
+  String get enterPIN;
+
+  /// No description provided for @guestAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest Access'**
+  String get guestAccess;
+
+  /// No description provided for @needHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Need Assistance?'**
+  String get needHelp;
+
+  /// No description provided for @connectToMill.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to a Mill'**
+  String get connectToMill;
+
+  /// No description provided for @bluetooth.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth'**
+  String get bluetooth;
+
+  /// No description provided for @wifi.
+  ///
+  /// In en, this message translates to:
+  /// **'Wi-Fi'**
+  String get wifi;
+
+  /// No description provided for @enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// No description provided for @nearbyMills.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Mills'**
+  String get nearbyMills;
+
+  /// No description provided for @scanForMills.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scanForMills;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @inUse.
+  ///
+  /// In en, this message translates to:
+  /// **'In Use'**
+  String get inUse;
+
+  /// No description provided for @offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get offline;
+
+  /// No description provided for @connect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connect;
+
+  /// No description provided for @scanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning for more mills...'**
+  String get scanning;
+
+  /// No description provided for @configureMilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure Your Milling'**
+  String get configureMilling;
+
+  /// No description provided for @step1Of3.
+  ///
+  /// In en, this message translates to:
+  /// **'Step 1 of 3'**
+  String get step1Of3;
+
+  /// No description provided for @chooseCereal.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Choose your Cereal'**
+  String get chooseCereal;
+
+  /// No description provided for @selectFineness.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Select the Fineness'**
+  String get selectFineness;
+
+  /// No description provided for @setQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Set the Quantity (kg)'**
+  String get setQuantity;
+
+  /// No description provided for @fine.
+  ///
+  /// In en, this message translates to:
+  /// **'Fine'**
+  String get fine;
+
+  /// No description provided for @medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get medium;
+
+  /// No description provided for @coarse.
+  ///
+  /// In en, this message translates to:
+  /// **'Coarse'**
+  String get coarse;
+
+  /// No description provided for @voiceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Or, tap the mic and say \"Mill 5kg of fine mil.\"'**
+  String get voiceHint;
+
+  /// No description provided for @confirmMilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Milling'**
+  String get confirmMilling;
+
+  /// No description provided for @millControlTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mill 01 - Connected'**
+  String get millControlTitle;
+
+  /// No description provided for @millStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Milling started successfully.'**
+  String get millStarted;
+
+  /// No description provided for @milling.
+  ///
+  /// In en, this message translates to:
+  /// **'Milling...'**
+  String get milling;
+
+  /// No description provided for @temperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get temperature;
+
+  /// No description provided for @vibration.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration'**
+  String get vibration;
+
+  /// No description provided for @progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
+
+  /// No description provided for @normal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get normal;
+
+  /// No description provided for @startMilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Milling'**
+  String get startMilling;
+
+  /// No description provided for @stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stop;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Milling History'**
+  String get historyTitle;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by date or ID...'**
+  String get searchHint;
+
+  /// No description provided for @exportHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Export History'**
+  String get exportHistory;
+
+  /// No description provided for @sessionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Weight: {weight} kg | Duration: {duration} min'**
+  String sessionDetails(Object duration, Object weight);
+
+  /// No description provided for @statusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Status: Failed | Duration: {duration} min'**
+  String statusFailed(Object duration);
+
+  /// No description provided for @notImplemented.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature not yet implemented.'**
+  String get notImplemented;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

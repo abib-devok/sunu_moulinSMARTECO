@@ -6,8 +6,20 @@ class VoiceService {
   final FlutterTts _flutterTts = FlutterTts();
   final SpeechToText _speechToText = SpeechToText();
 
-  // TODO: Implémenter les méthodes pour parler, écouter et gérer les langues.
+  Future<void> init() async {
+    await _flutterTts.setLanguage("fr-FR");
+    await _speechToText.initialize();
+  }
+
   Future<void> speak(String text) async {
     await _flutterTts.speak(text);
+  }
+
+  // Simule l'écoute d'une commande vocale.
+  Future<String> listen() async {
+    // Dans une vraie application, on utiliserait _speechToText.listen(...)
+    // et on attendrait un résultat. Ici, on simule.
+    await Future.delayed(const Duration(seconds: 2));
+    return "démarrer";
   }
 }
